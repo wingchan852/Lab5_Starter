@@ -10,22 +10,20 @@ function init() {
 
   function populateVoiceList() {
     voices = synth.getVoices();
-
+    
+    // add voices to dropdown
     for (let i = 0; i < voices.length; i++) {
       const option = document.createElement("option");
       option.textContent = `${voices[i].name} (${voices[i].lang})`;
-
-      if (voices[i].default) {
-        option.textContent += " — DEFAULT";
-      }
 
       option.setAttribute("data-lang", voices[i].lang);
       option.setAttribute("data-name", voices[i].name);
       voiceSelect.appendChild(option);
     }
-  }
+}
 
   populateVoiceList();
+
   if (speechSynthesis.onvoiceschanged !== undefined) {
     speechSynthesis.onvoiceschanged = populateVoiceList;
   }
@@ -46,10 +44,10 @@ function init() {
         utterThis.voice = voices[i];
       }
     }
-    utterThis.pitch = pitch.value;
-    utterThis.rate = rate.value;
-    synth.speak(utterThis);
-    synth.speak(utterThis);
+    
+    if (textInput.value === "" || selectedOption !== null) {
+      synth.speak(utterThis);
+    }
 
     // change face
     utterThis.addEventListener("start", () => {
